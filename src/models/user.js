@@ -1,4 +1,5 @@
 'use strict';
+const bcrypt = require('bcryptjs');
 const {
   Model
 } = require('sequelize');
@@ -10,7 +11,18 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      // define association here   
+    }
+    async comparePassword(password) {
+      return await bcrypt.compare(password, this.password);
+    }
+    toJSON() {
+      const values = { ...this.get() };
+      delete values.password;
+      delete values.otp;
+      delete values.otpExpires;
+
+      return values;
     }
   }
   User.init({
@@ -25,27 +37,30 @@ module.exports = (sequelize, DataTypes) => {
         this.setDataValue('email', value.trim().toLowerCase());
       }
     },
-    passwordHash: {
+    password: {
       type: DataTypes.STRING,
       allowNull: false
     },
     role: {
-      type: DataTypes.ENUM('employee', 'admin', 'superAdmin'),
+      type: DataTypes.ENUM('employee', 'admin', 'superadmin'),
       defaultValue: 'employee',
       allowNull: false
     },
-    name: DataTypes.STRING,
-    twoFactorEnabled: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false
     },
-    twoFactorSecret: {
+    status: {
+      type: DataTypes.ENUM('pending', 'active'),
+      defaultValue: 'pending'
+    },
+    otp: {
       type: DataTypes.STRING,
       allowNull: true
     },
-    tokenVersion: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0
+    otpExpires: {
+      type: DataTypes.DATE,
+      allowNull: true
     },
     resetPasswordToken: {
       type: DataTypes.STRING,
@@ -58,7 +73,24 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'User',
-    timestamps: true
+    timestamps: true,
+    defaultScope: {
+      attributes: { exclude: ['password', 'otp', 'otpExpires'] }
+    },
+    hooks: {
+      beforeCreate: async (user) => {
+        if (user.password) {
+          const salt = await bcrypt.genSalt(10);
+          user.password = await bcrypt.hash(user.password, salt);
+        }
+      },
+      beforeUpdate: async (user) => {
+        if (user.changed('password')) {
+          const salt = await bcrypt.genSalt(10);
+          user.password = await bcrypt.hash(user.password, salt);
+        }
+      }
+    }
   });
   return User;
 };

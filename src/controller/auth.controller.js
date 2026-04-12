@@ -7,7 +7,7 @@ const registerUser = async (req, res) => {
         const user = await authService.registerUser(req.body);
         return successResponse(res, user, 'Successfully registered', STATUS_CODES.CREATED);
     } catch (error) {
-        return errorResponse(res, error, error.statusCode);
+        return errorResponse(res, error.message, error.statusCode);
     }
 };
 

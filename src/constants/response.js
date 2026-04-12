@@ -8,13 +8,12 @@ function successResponse(res, data, message, statusCode) {
         });
 }
 
-function errorResponse(res, error, message, statusCode) {
+function errorResponse(res, message, statusCode) {
     return res
         .status(statusCode)
         .json({
-            error: error,
+            error: message,
             success: false,
-            message: message,
         });
 }
 

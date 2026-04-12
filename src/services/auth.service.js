@@ -1,3 +1,4 @@
+const logger = require("../config/logger");
 const STATUS_CODES = require("../constants/httpStatusCodes");
 const { AuthRepository } = require("../repositories");
 const AppError = require("../utils/error");
@@ -9,7 +10,14 @@ async function registerUser(data) {
         const user = await authRepository.create(data);
         return user;
     } catch (error) {
-        throw AppError('Error in registering User', STATUS_CODES.INTERNAL_SERVER_ERROR);
+        logger.error('Error in registering user', error);
+        if (error.name === 'SequelizeUniqueConstraintError') {
+            throw new AppError('User already exists', STATUS_CODES.CONFLICT);
+        }
+        if (error.name === 'SequelizeValidationError') {
+            throw new AppError('Invalid email', STATUS_CODES.CONFLICT);
+        }
+        throw new AppError('Error in registering User', STATUS_CODES.INTERNAL_SERVER_ERROR);
     }
 }
 
