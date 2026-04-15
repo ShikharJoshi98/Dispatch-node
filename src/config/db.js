@@ -1,11 +1,12 @@
 const { Sequelize } = require("sequelize")
-const { DB_NAME, DB_USERNAME, DB_PASSWORD, DB_HOST } = require("./server.config")
+const config = require('./database.config')[process.env.NODE_ENV || 'development'];
 
-const connectDB = async () => {
-    const sequelize = new Sequelize(DB_NAME, DB_USERNAME, DB_PASSWORD, {
-        host: DB_HOST,
+const sequelize = new Sequelize(config.database, config.username, config.password, {
+        host: config.host,
         dialect: "mysql"
     });
+
+const connectDB = async () => {
     try {
         await sequelize.authenticate();
         console.log('DB connection estabilished successfully');
@@ -16,5 +17,6 @@ const connectDB = async () => {
 }
 
 module.exports = {
-    connectDB
+    connectDB,
+    sequelize
 };
