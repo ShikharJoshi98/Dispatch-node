@@ -1,0 +1,79 @@
+const { DataTypes } = require("sequelize");
+const { sequelize } = require("../config/db");
+const Roles = require("./roles.model");
+const Branch = require("./branch.model");
+const Designation = require("./designation.model");
+
+const User = sequelize.define("User", {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    first_name: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    last_name: {
+        type: DataTypes.STRING
+    },
+    role_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 3,
+        references: {
+            model: Roles,
+            key: id
+        }
+    },
+    branch_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: Branch,
+            key: id
+        }
+    },
+    designation_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: Designation,
+            key: id
+        }
+    },
+    email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        validate: {
+            isEmail: true
+        }
+    },
+    password: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    verify_account_token: {
+        type: DataTypes.STRING,
+    },
+    verify_account_expires: {
+        type: DataTypes.STRING,
+    },
+    reset_password_token: {
+        type: DataTypes.STRING,
+    },
+    reset_password_expires: {
+        type: DataTypes.STRING,
+    },
+    created_by: {
+        type: DataTypes.INTEGER
+    },
+    updated_by: {
+        type: DataTypes.INTEGER
+    }
+}, {
+    timestamps: true
+});
+
+module.exports = User;
