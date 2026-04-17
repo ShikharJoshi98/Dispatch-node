@@ -23,7 +23,7 @@ const User = sequelize.define("User", {
         defaultValue: 3,
         references: {
             model: Roles,
-            key: id
+            key: "id"
         }
     },
     branch_id: {
@@ -31,7 +31,7 @@ const User = sequelize.define("User", {
         allowNull: false,
         references: {
             model: Branch,
-            key: id
+            key: "id"
         }
     },
     designation_id: {
@@ -39,7 +39,7 @@ const User = sequelize.define("User", {
         allowNull: false,
         references: {
             model: Designation,
-            key: id
+            key: "id"
         }
     },
     email: {

@@ -3,22 +3,22 @@ class CrudRepository{
         this.model = model;
     }
     
-    create(data) {
+    async create(data) {
         const response = await this.model.create(data);
         return response;
     }
 
-    getAll() {
+    async getAll() {
         const response = await this.model.findAll();
         return response;
     }
 
-    get(id) {
+    async get(id) {
         const response = await this.model.findByPk(id);
         return response;
     }
 
-    update(id, data) {
+    async update(id, data) {
         const response = await this.model.update(data, {
             where: {
                 id: id
@@ -26,7 +26,7 @@ class CrudRepository{
         });
     }
 
-    destroy(id) {
+    async destroy(id) {
         const response = await this.model.destroy({
             where: {
                 id:id
