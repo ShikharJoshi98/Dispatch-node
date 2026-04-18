@@ -28,7 +28,7 @@ const User = sequelize.define("User", {
     },
     branch_id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
             model: Branch,
             key: "id"
@@ -36,7 +36,7 @@ const User = sequelize.define("User", {
     },
     designation_id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
             model: Designation,
             key: "id"
