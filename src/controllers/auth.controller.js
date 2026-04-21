@@ -1,10 +1,10 @@
 const STATUS_CODE = require("../constant/statusCode");
-const { authService } = require("../services");
+const { authService, roleService } = require("../services");
 const { successResponse, errorResponse } = require("../utils/response");
 
 const registerRole = async (req, res) => {
     try {
-        const role = await authService.createRole(req.body);
+        const role = await roleService.createRole(req.body);
         return successResponse(res, 'Role created Successfully', role, STATUS_CODE.CREATED);
     } catch (error) {
         return errorResponse(res, error.message, STATUS_CODE.INTERNAL_SERVER_ERROR);
