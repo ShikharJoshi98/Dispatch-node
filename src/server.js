@@ -18,7 +18,9 @@ app.use('/api', apiRoutes);
 const startServer = async () => {
     try {
         await dbConfig.connectDB();
-        await dbConfig.sequelize.sync({ force: true });
+        await dbConfig.sequelize.sync();
+        // await dbConfig.sequelize.sync({ alter: true });
+        // await dbConfig.sequelize.sync({ force: true });
         logger.info("All models synced successfully");
         app.listen(serverConfig.PORT, () => {
             logger.info(`Server listening on port ${serverConfig.PORT}`);
