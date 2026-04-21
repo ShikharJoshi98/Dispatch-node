@@ -1,4 +1,5 @@
 const { DataTypes } = require("sequelize");
+const bcrypt = require('bcryptjs');
 const { sequelize } = require("../config/db");
 const Roles = require("./roles.model");
 const Branch = require("./branch.model");
@@ -73,7 +74,43 @@ const User = sequelize.define("User", {
         type: DataTypes.INTEGER
     }
 }, {
-    timestamps: true
+    timestamps: true,
+
+     defaultScope: {
+        attributes: {
+            exclude: ["password"]
+        }
+    },
+    scopes: {
+        withPassword: {
+            attributes: {}
+        }
+    },
+
+    hooks: {
+        beforeCreate: async (user) => {
+            if (user.password) {
+                const saltRounds = 10;
+                user.password = await bcrypt.hash(user.password, saltRounds);
+            }
+        },
+        beforeUpdate: async (user) => {
+            if (user.changed("password")) {
+                const saltRounds = 10;
+                user.password = await bcrypt.hash(user.password, saltRounds);
+            }
+        }
+    }
 });
+
+User.prototype.toJSON = function () {
+    const values = { ...this.get() };
+    delete values.password;
+    delete values.reset_password_token;
+    delete values.reset_password_expires;
+    delete values.verify_account_token;
+    delete values.verify_account_expires;
+    return values;
+};
 
 module.exports = User;
