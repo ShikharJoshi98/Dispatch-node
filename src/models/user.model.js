@@ -43,29 +43,9 @@ const User = sequelize.define("User", {
             key: "id"
         }
     },
-    email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-        validate: {
-            isEmail: true
-        }
-    },
     password: {
         type: DataTypes.STRING,
         allowNull: false
-    },
-    verify_account_token: {
-        type: DataTypes.STRING,
-    },
-    verify_account_expires: {
-        type: DataTypes.STRING,
-    },
-    reset_password_token: {
-        type: DataTypes.STRING,
-    },
-    reset_password_expires: {
-        type: DataTypes.STRING,
     },
     created_by: {
         type: DataTypes.INTEGER
