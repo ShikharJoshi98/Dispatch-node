@@ -22,6 +22,16 @@ const createUser = async (data) => {
     }
 }
 
+const loginUser = async (data) => {
+    try {
+        
+    } catch (error) {
+        logger.error("Error in loginUser(auth service)", error);
+        throw new Error('Error logging in');
+    }
+}
+
 module.exports = {
-    createUser
+    createUser,
+    loginUser
 }
