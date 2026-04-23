@@ -1,10 +1,19 @@
 const { AuthRepository } = require("../repository");
+const generateUsername = require("../utils/generateUsername");
 const logger = require("../utils/logger");
 
 const authRepository = new AuthRepository();
 
 const createUser = async (data) => {
-    try {
+    try {        
+        let newUsername;
+        let userExist;
+        do {
+            newUsername = generateUsername(data.first_name, data.last_name);
+            userExist = await authRepository.getByUsername(newUsername);
+        } while (userExist)
+        
+        data.username = newUsername;
         const response = await authRepository.create(data);
         return response;
     } catch (error) {

@@ -43,6 +43,10 @@ const User = sequelize.define("User", {
             key: "id"
         }
     },
+    username: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     password: {
         type: DataTypes.STRING,
         allowNull: false
@@ -56,7 +60,7 @@ const User = sequelize.define("User", {
 }, {
     timestamps: true,
 
-     defaultScope: {
+    defaultScope: {
         attributes: {
             exclude: ["password"]
         }
