@@ -7,4 +7,4 @@ class AuthRepository extends CrudRepository{
     }
 }
 
-module.exports = User;
+module.exports = AuthRepository;
