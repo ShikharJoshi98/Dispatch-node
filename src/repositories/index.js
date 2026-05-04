@@ -1,3 +1,5 @@
 module.exports = {
-    AuthRepository: require("./authRepository")
+    AuthRepository: require("./authRepository"),
+    BranchRepository: require("./branchRepository"),
+    DesignationRepository: require("./designationRepository")
 };

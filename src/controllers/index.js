@@ -1,3 +1,6 @@
 module.exports = {
-    authController: require("./authController")
+    authController: require("./authController"),
+    branchController: require("./branchController"),
+    designationController: require("./designationController")
+
 };
