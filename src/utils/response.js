@@ -1,11 +1,10 @@
 const successResponse = (res, data, message, statusCode) => {
     return res
-        .status(statusCode)
+        .status(statusCode || 200)
         .json({
             success: true,
             message: message,
-            data,
-            statusCode: statusCode || 200
+            data
         });
 }
 

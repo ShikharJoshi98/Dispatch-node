@@ -11,7 +11,7 @@ const createBranch = async (data) => {
             return newBranch;
         } catch (error) {
              logger.error("Error creating branch", {message: error.message, stack: error.stack});
-            if (error.name !== 'SequelizeUniqueConstraintError') {               
+            if (error.name == 'SequelizeUniqueConstraintError') {               
                 throw new AppError("Branch already exists", STATUS_CODE.CONFLICT);
             }
             throw new AppError("Error in creating branch", STATUS_CODE.INTERNAL_SERVER_ERROR);
