@@ -19,6 +19,7 @@ app.listen(serverConfig.PORT,async () => {
     try {
         logger.info(`Server listening at ${serverConfig.PORT}`);
         await sequelize.authenticate();
+        await sequelize.sync({ alter: true });
         logger.info('DB has been connected successfully');
     } catch (error) {
         logger.error('Error in starting server', error.message);
